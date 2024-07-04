@@ -34,6 +34,7 @@ set_target_properties(fbxsdk PROPERTIES
 add_executable(
     fbxtom2
     main.cpp
+    m2writer.cpp
     fbx_sdk/2020.3.2/samples/Common/Common.h
     fbx_sdk/2020.3.2/samples/Common/Common.cxx    
 )

@@ -1,6 +1,8 @@
 #include <fbxsdk.h>
 #include <string>
 #include <iostream>
+
+#include "m2writer.h"
 #include "../Common/Common.h" 
 
 int main(int argc, char** argv)
@@ -11,24 +13,25 @@ int main(int argc, char** argv)
 	std::string sourceFbx = argv[1];
     int dotPos = sourceFbx.find('.');
     std::string outputM2 = sourceFbx.substr(0, dotPos) + ".m2";
+    std::cout << outputM2 << "\n\n";
 
     FbxManager* manager = nullptr;
     FbxScene* scene = nullptr;
 
     InitializeSdkObjects(manager, scene);
 
+    int registeredCount;
+    int writerId;
+
+    //We need to register the writer for the sdk to be aware.
+    manager->GetIOPluginRegistry()->RegisterWriter(CreateM2Writer, GetM2WriterInfo,
+        writerId, registeredCount, FillM2WriterIOSettings);
+
 	bool isCompleted = LoadScene(manager, scene, sourceFbx.c_str());
     if(!isCompleted) {
         std::cout << "Call to LoadScene() failed.\n";
         return -1;
     }
-
-    int writerId = manager->GetIOPluginRegistry()->FindWriterIDByExtension("m2");
-    if (writerId < 0) {
-        std::cout << "The writer for extension m2 was not found";
-        return;
-    }
-    std::cout << "The writer id is " << writerId << std::endl;
 
     FbxExporter* exporter = FbxExporter::Create(manager, "");
 
