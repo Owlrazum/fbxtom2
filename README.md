@@ -1,0 +1,1 @@
+You will need to install [FBX SDK](https://www.autodesk.com/developer-network/platform-technologies/fbx-sdk-2020-3) and place it in the same folder as this repo's top `CMakeLists.txt`
